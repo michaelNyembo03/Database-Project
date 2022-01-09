@@ -1,0 +1,227 @@
+create database Vet_clinic;
+
+use Vet_clinic;
+create table Customer(
+    CustId int AUTO_INCREMENT not null primary key,
+    cust_name varchar(30) not null,
+    phone varchar(13) not null,
+    address varchar(100) not null
+    );
+    
+create table Staff(
+	staff_id int not null AUTO_INCREMENT primary key,
+	staff_name varchar(30) not null,
+	phone varchar(13) not null,
+	address varchar(100) not null,
+	work_hour time null
+);
+create table Vet(
+    vet_diplomaID int AUTO_INCREMENT not null primary key,
+    staff_id int not null,
+    foreign key(staff_id) references Staff(staff_id)
+    );
+    
+create table Assistant(
+	assist_diplomaID int AUTO_INCREMENT not null primary key,
+	staff_id int not null,
+    foreign key(staff_id) references Staff(staff_id)
+    );
+
+create table Receptionist(
+	recept_diplomaID int AUTO_INCREMENT not null primary key,
+	staff_id int not null,
+    foreign key(staff_id) references Staff(staff_id)
+    );
+    
+create table Pet(
+  pet_id int auto_increment not null primary key,
+  pet_name varchar(30) not null,
+  genre enum('male','female') not null,
+  b_o_d date not null,
+  color varchar(30) not null,
+  pet_type varchar(30) not null,
+  custID int not null,
+  foreign key(custID) references Customer(CustId)
+  
+);
+
+create table Exotic_Pet( 
+                         id int AUTO_INCREMENT not null primary key,
+                         habitat varchar(500) not null, 
+                         care varchar(500) not null, 
+                         food varchar(500) not null, 
+                         pet_id int not null, 
+                         foreign key(pet_id) references Pet(pet_id)
+
+                    );
+    
+create table Domestic_Pet(
+    license_num int AUTO_INCREMENT not null primary key,
+    pet_id int not null,
+    foreign key(pet_id) references Pet(pet_id)
+    );
+    
+create table Supplies(
+        sup_id int AUTO_INCREMENT not null primary key,
+        sup_name  varchar(30) not null,
+        expire_date date not null,
+        description varchar(100),
+        price decimal not null
+    );
+       
+create table purchase(
+        p_num int not null,
+        p_date date not null,
+        quantity int not null,
+        sup_id int not null,
+        tot_price decimal not null,
+        custID int not null,
+        foreign key(sup_id) references Supplies(sup_id),
+        foreign key(custID) references Customer(CustId)
+    );
+    
+create table Sale_Record(
+        rec_num varchar(10) not null,
+        saleR_date date not null,
+        quantity int not null,
+        sup_id int not null,
+        custId int not null,
+        foreign key(sup_id) references Supplies(sup_id),
+        foreign key(custID) references Customer(custId)
+    );
+    
+create table Appointment(
+        ap_time time not null,
+        ap_date date not null,
+        vet_diplomaID int not null,
+        custId int not null,
+        pet_id int not null,
+        foreign key(vet_diplomaID) references Vet(vet_diplomaID),
+        foreign key(custID) references Customer(CustId),
+        foreign key(pet_id) references Pet(pet_id)
+    );
+
+
+
+
+
+
+
+INSERT 
+
+
+insert into Customer(CustID, cust_name, phone,address) 
+values (NULL,'Alin','05338428756','CIU APT B2 DOOR 233'), 
+       (NULL,'Arcel','05338429075','CITY CENTER APT ONER 1'), 
+       (NULL,'Alin','05338422345','HAMITKOY APT AMAR'), 
+       (NULL,'Alin','05338426589','GONYELI APT ONER'), 
+       (NULL,'Alin','05338428710','GOSHMENKOY APT OZUN'), 
+       (NULL,'Alin','05338428701','ORTAKOY APT BOMINTI'), 
+       (NULL,'Alin','05338428765','METROPOL APT KAYA'), 
+       (NULL,'Alin','05338428779','HASPOLAT APT MOZA')
+
+
+insert into Staff(staff_id, staff_name, phone,address,work_hour) 
+values (NULL,'Patrick','05428428712','MAGUSA APT UZUN 2',10), 
+       (NULL,'Marc','05428428717','LEKOSA APT POT',10), 
+       (NULL,'Michael','05428428700','CITY CENTER APT WELCOME',10), 
+       (NULL,'Leon','05428428701','GONYELI APT JESUS IS LORD',54), 
+       (NULL,'Ben','05428428702','CITY CENTER APT MAKAYA',54), 
+       (NULL,'Laura','05428428703','MARMARA APT DORAS',10),   
+       (NULL,'Marcelin','05428428705','HASPOLAT APT PONTORO',10), 
+       (NULL,'Patricia','05428428706','HASPOLAT APT PUNJAB',NULL), 
+       (NULL,'Claudia','05428428707','HAMITKOY APT MORS',NULL),   
+       (NULL,'Lauren','05428428708','KAYMAKLI APT HEAVEN',NULL)
+
+INSERT INTO `vet` (`vet_diplomaID`, `staff_id`) 
+VALUES ('1001', '8'), 
+       ('1002', '9'), 
+       ('1003', '10');
+
+
+INSERT INTO `receptionist` (`recept_diplomaID`, `staff_id`) 
+VALUES ('001', '4'), 
+       ('002', '5');
+
+
+
+INSERT INTO `assistant` (`assist_diplomaID`, `staff_id`) 
+VALUES ('900', '8'), 
+       ('9001', '2'), 
+       ('9002', '3'), 
+       ('9003', '6'), 
+       ('9004', '7');
+
+
+insert into Pet(pet_id, pet_name, genre,b_o_d,color,pet_type,custID) 
+values (NULL,'Max','male','2021-06-16','black','dog','1'), 
+       (NULL,'Momo','male','2021-01-12','brown','cat','5'), 
+       (NULL,'Riki','male','2021-07-06','black','Monkey','3'), 
+       (NULL,'Kiki','female','2021-02-11','black','Monkey','2'), 
+       (NULL,'Max','male','2021-06-01','blue','parrot','4'), 
+       (NULL,'Luise','female','2021-01-01','brown and black','Savannah Cat','6'), 
+       (NULL,'laura','female','2021-12-16','light brown','Fennec Fox','6'), 
+       (NULL,'Marin','female','2021-04-06','light brown','Turtles','7'), 
+       (NULL,'Doxa','male','2021-07-10','light yellow','Dwarf Pigs','8'), 
+       (NULL,'Mula','female','2021-09-11','brown','Kinkajou','7')
+
+
+INSERT INTO `domestic_pet` (`license_num`, `pet_id`) 
+VALUES ('10100', '11'), 
+       ('10101', '12'), 
+       ('10102', '13'), 
+       ('10103', '14'), 
+       ('10104', '15');
+
+
+INSERT INTO `exotic_pet` (`id`, `habitat`, `care`, `food`, `pet_id`) 
+VALUES ('001', ' areas of bush, tall grass, and dry reed beds near streams, high-altitude moorlands, and bamboo thickets.', 'The savannah cat has a coat that is easy to care for. Brush your cat weekly to keep hairballs at bay, and trim your cat\'s nails as often as needed, which may be weekly. Brush your cat\'s teeth frequently and ensure you get the appropriate veterinary cleanings.', ' high-protein food', '16'), 
+       ('002', 'Fennecs require temperatures of at least 68 degrees Fahrenheit. An outdoor enclosure that\'s as large as possible is ideal to give the fennec some exercise', 'routine examinations and vaccinations to stay healthy', 'Vegetables, fruits, pinkie mice, rodents, eggs, crickets, mealworms, raw meat diets', '17'), 
+       ('003', 'Aquarium', 'swimming opportunities, while also allowing plenty of space to haul out of the water and get some sun', 'Sea cucumbers, jellyfish, mollusks, prawns, bryozoans, other invertebrates, and seaweed.', '18'), 
+       ('004', 'large crate or tent', 'child-proof locks on cabinets, and block off areas you do not want your mini pig to explore.\r\nMake sure there are no sharp edges or objects around the home that could injure your pet as he wanders from room to room.\r\nSupervise your pig, especially when young, when he roams the house.\r\nLeave him in a smaller secured area or pen when you leave the home.', 'pig pellets that are low in protein and fat and high in fiber snd vegetable', '19'),
+       ('005', 'they live and forage in trees', 'Kinkajous need as large of an enclosure as possible', 'fruit', '20');
+
+
+
+insert into Supplies(sup_id, sup_name, expire_date,description,price) 
+values (NULL,'Puppy medium lamb & rice','2022-12-12','mix food for dog',44.99), 
+       (NULL,'ferplast drink','2022-12-12',' cup',4.50), 
+       (NULL,'Flamingo Metalic feeder','2022-12-12','feeder',3.00), 
+       (NULL,'Karlie Wood Bedding','2022-12-12','Bed',8.00),   
+       (NULL,'chips','2022-12-12','cereal',3.50), 
+       (NULL,'flakes','2022-12-12','cereal',6.40), 
+       (NULL,'milk','2022-12-12','mik',6.20), 
+       (NULL,'bones toy','2022-12-12','toy',12.00), 
+       (NULL,'vegetables','2022-12-12','herb for pet',10.00), 
+       (NULL,'coat','2022-12-12','coat for pet',20.00), 
+       (NULL,'rat toy','2022-12-12','toy',25.00), 
+       (NULL,'tooth brush','2022-12-12','brush',54.00), 
+       (NULL,'tooth pate','2022-12-12','pate',15.00)
+
+
+INSERT INTO `purchase` (`p_num`, `p_date`, `quantity`, `tot_price`, `sup_id`, `custID`) 
+VALUES ('100', '2022-01-04', '2', '12', '7', '5'), 
+       ('101', '2022-01-03', '1', '8', '2', '4'), 
+       ('103', '2022-01-04', '4', '216', '12', '1'), 
+       ('104', '2022-01-01', '5', '15', '5', '3'), 
+       ('105', '2022-01-03', '1', '6', '3', '6');
+
+
+INSERT INTO `sale_record` (`rec_num`, `saleR_date`, `quantity`, `sup_id`, `custId`) 
+VALUES ('5001', '2022-01-04', '2', '7', '5'), 
+       ('5002', '2022-01-03', '1', '2', '4'), 
+       ('5003', '2022-01-04', '4', '12', '1'), 
+       ('5004', '2022-01-01', '5', '5', '3'), 
+       ('5005', '2022-01-03', '1', '3', '6');
+
+
+
+INSERT INTO `appointment` (`ap_time`, `ap_date`, `vet_diplomaID`, `custId`, `pet_id`) 
+VALUES ('09:00:00', '2022-01-07', '1001', '2', '14'), 
+       ('14:00:00', '2022-01-07', '1001', '3', '13'), 
+       ('09:00:00', '2022-01-08', '1001', '6', '16'), 
+       ('09:00:00', '2022-01-08', '1002', '7', '18'), 
+       ('09:00:00', '2022-01-09', '1003', '7', '20');
+
+
+
